@@ -1,0 +1,686 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SryModz Ultimate</title>
+<style>
+:root {
+  --accent: #00f7ff;
+  --bg: #060711;
+  --panel: #101321;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, #19234b 0%, transparent 48%),
+    var(--bg);
+  color: #f4f7ff;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: .22;
+  background-image:
+    linear-gradient(#26304a 1px, transparent 1px),
+    linear-gradient(90deg, #26304a 1px, transparent 1px);
+  background-size: 35px 35px;
+  mask-image: linear-gradient(to bottom, black, transparent 90%);
+}
+header {
+  text-align: center;
+  padding: 30px 12px 20px;
+}
+.logo {
+  margin: 0;
+  font-size: clamp(36px, 8vw, 76px);
+  font-weight: 1000;
+  font-style: italic;
+  letter-spacing: -3px;
+  background: linear-gradient(90deg,
+    #ff245f, #ffb52e, #f7ff42, #2bffb4,
+    #27d8ff, #9c6bff, #ff4bd8, #ff245f);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow 4s linear infinite, bounce 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 17px #00eaff70);
+}
+@keyframes rainbow { to { background-position: 300% center; } }
+@keyframes bounce {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-7px) scale(1.025); }
+}
+.subtitle {
+  color: #a6b4d4;
+  letter-spacing: 4px;
+  font-size: 11px;
+  margin-top: 8px;
+}
+.statusbar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.pill {
+  border: 1px solid #2b3656;
+  border-radius: 99px;
+  padding: 8px 13px;
+  color: #b7c6e8;
+  background: #0c1020;
+  font-size: 11px;
+}
+.dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #3dff9a;
+  margin-right: 6px;
+  box-shadow: 0 0 10px #3dff9a;
+}
+.layout {
+  width: min(1200px, 95%);
+  margin: 0 auto 40px;
+  display: grid;
+  grid-template-columns: 220px minmax(0,1fr);
+  gap: 18px;
+}
+.sidebar, .main {
+  border: 1px solid #222b45;
+  background: #0b0e1bcc;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 12px 50px #0005;
+  backdrop-filter: blur(12px);
+}
+.side-title, .section-label {
+  color: #7282a9;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  margin: 9px 8px 12px;
+}
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.nav button {
+  text-align: left;
+  border: 1px solid transparent;
+  color: #aebbd8;
+  background: transparent;
+  padding: 12px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: .2s;
+}
+.nav button:hover, .nav button.active {
+  color: white;
+  border-color: #263f65;
+  background: linear-gradient(90deg,#11273c,#111628);
+  box-shadow: inset 3px 0 var(--accent), 0 0 18px #00eaff0d;
+}
+.main-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #222b45;
+  padding: 4px 2px 16px;
+  margin-bottom: 18px;
+}
+h2 { margin: 0; font-size: 22px; }
+.small { color: #8492b2; font-size: 11px; margin-top: 6px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+}
+.card {
+  min-width: 0;
+  background: linear-gradient(145deg,#121729,#0d101d);
+  border: 1px solid #242e49;
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.card:hover {
+  border-color: #365477;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px #0004;
+}
+.card h3 { font-size: 13px; margin: 0 0 8px; }
+.card p { color: #8492b2; font-size: 11px; line-height: 1.6; margin: 0 0 12px; }
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.switch {
+  appearance: none;
+  width: 43px; height: 24px;
+  flex: 0 0 43px;
+  border-radius: 30px;
+  background: #30364a;
+  position: relative;
+  cursor: pointer;
+  transition: .25s;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  width: 18px; height: 18px;
+  left: 3px; top: 3px;
+  border-radius: 50%;
+  background: #c4cbe0;
+  transition: .25s;
+}
+.switch:checked {
+  background: var(--accent);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent), transparent 45%);
+}
+.switch:checked::after {
+  left: 22px;
+  background: #07111c;
+}
+button, input, select, textarea { font: inherit; }
+.action {
+  border: 1px solid #25425d;
+  background: #102133;
+  color: #e9faff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  transition: .2s;
+}
+.action:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 16px #00eaff22;
+}
+.action.primary {
+  background: linear-gradient(100deg,#075d76,#153e7b);
+  border-color: #168ca5;
+}
+.action.danger {
+  width: 100%;
+  min-height: 64px;
+  font-size: 16px;
+  color: #fff;
+  border: 1px solid #ff426b;
+  background: linear-gradient(100deg,#8f153d,#3c174c,#8f153d);
+  background-size: 200%;
+  animation: dangerPulse 3s linear infinite;
+}
+@keyframes dangerPulse { to { background-position: 200% center; } }
+.field {
+  width: 100%;
+  color: white;
+  background: #080b15;
+  border: 1px solid #2b3550;
+  border-radius: 8px;
+  padding: 11px;
+  outline: none;
+}
+.field:focus { border-color: var(--accent); }
+label.range-label {
+  display: flex;
+  justify-content: space-between;
+  color: #aebbd8;
+  font-size: 11px;
+  margin: 12px 0 9px;
+}
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.color-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.swatch {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid #ffffff60;
+  cursor: pointer;
+}
+.swatch:hover { transform: scale(1.15); }
+.player-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+.player-tag {
+  background: #172039;
+  border: 1px solid #2e4061;
+  border-radius: 7px;
+  padding: 7px 9px;
+  font-size: 11px;
+}
+.player-tag button {
+  background: none;
+  border: none;
+  color: #ff7c99;
+  margin-left: 8px;
+  cursor: pointer;
+}
+.notice {
+  border: 1px solid #2c405e;
+  background: #0b1726;
+  color: #a9c7e7;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 15px;
+}
+.hidden { display: none !important; }
+footer {
+  color: #596783;
+  text-align: center;
+  padding: 20px;
+  font-size: 10px;
+}
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: #02030ce8;
+  backdrop-filter: blur(12px);
+}
+#overlay.show { display: flex; animation: fadeIn .2s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.popup {
+  position: relative;
+  width: min(650px,100%);
+  text-align: center;
+  padding: 35px 22px;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--accent);
+  background: radial-gradient(ellipse at top,#17324a,#0a0d19 70%);
+  box-shadow: 0 0 35px color-mix(in srgb,var(--accent),transparent 65%),
+              0 0 120px #000;
+  animation: pop .35s cubic-bezier(.2,1.5,.5,1);
+}
+@keyframes pop {
+  from { transform: scale(.65) translateY(30px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+.popup::before {
+  content: "";
+  position: absolute;
+  inset: -80%;
+  pointer-events: none;
+  background: conic-gradient(transparent,#00eaff18,transparent,#b14dff20,transparent);
+  animation: spin 7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.popup-content { position: relative; }
+.popup-icon {
+  font-size: 58px;
+  text-shadow: 0 0 25px var(--accent);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.popup-kicker {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  margin: 18px 0 10px;
+}
+.popup h2 {
+  font-size: clamp(34px,8vw,62px);
+  line-height: 1;
+  font-weight: 1000;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 25px #00eaff55;
+}
+.popup p {
+  max-width: 480px;
+  margin: 18px auto 24px;
+  color: #bdc9e1;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.popup .action { min-width: 145px; padding: 13px 20px; }
+#confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 51;
+  pointer-events: none;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  top: -20px;
+  width: 8px; height: 14px;
+  animation: fall 2.8s linear forwards;
+}
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(800deg); opacity: 0; }
+}
+@media(max-width:720px) {
+  .layout { grid-template-columns: 1fr; }
+  .nav { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .grid { grid-template-columns: 1fr; }
+  .sidebar, .main { padding: 12px; }
+  .main-head { align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1 class="logo">SryModz</h1>
+  <div class="subtitle">U L T I M A T E &nbsp; C O N T R O L &nbsp; P A N E L</div>
+  <div class="statusbar">
+    <span class="pill"><span class="dot"></span>WEB PANEL ONLINE</span>
+    <span class="pill">VERSION 14.1 STYLE</span>
+    <span class="pill" id="activeCount">0 OPTIONEN AKTIV</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-title">NAVIGATION / GAMES</div>
+    <nav class="nav" id="nav">
+      <button class="active" data-page="home">⌂ Übersicht</button>
+      <button data-page="warzone">◈ Warzone</button>
+      <button data-page="gta5">◆ GTA V</button>
+      <button data-page="gta6">◇ GTA VI</button>
+      <button data-page="bo1">◉ Black Ops 1</button>
+      <button data-page="bo2">◉ Black Ops 2</button>
+      <button data-page="zombies">☣ BO2 Zombies</button>
+      <button data-page="visual">✦ Visuals & HUD</button>
+      <button data-page="players">♙ Spielerliste</button>
+      <button data-page="system">⚙ System & Farben</button>
+    </nav>
+    <div class="notice">
+      <strong>LOCAL WEB PANEL</strong><br>
+      Einstellungen und Effekte gelten nur für diese Webseite. Keine Verbindung zu einem Spiel oder zur PS5-Firmware.
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-head">
+      <div>
+        <h2 id="pageTitle">Ultimate Übersicht</h2>
+        <div class="small" id="pageDesc">Dein neonbeleuchtetes SryModz-Control-Panel</div>
+      </div>
+      <button class="action" id="reset">RESET</button>
+    </div>
+    <div id="pageContent"></div>
+  </main>
+</div>
+
+<footer>SRYMODZ ULTIMATE • WEB INTERFACE • ALLE SCHALTER SIND LOKALE VISUALISIERUNGEN</footer>
+
+<div id="overlay" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+  <div class="popup">
+    <div class="popup-content">
+      <div class="popup-icon" id="popupIcon">✦</div>
+      <div class="popup-kicker" id="popupKicker">SYSTEM MELDUNG</div>
+      <h2 id="popupTitle">AKTIVIERT</h2>
+      <p id="popupText"></p>
+      <button class="action primary" id="closePopup">WEITER</button>
+    </div>
+  </div>
+</div>
+<div id="confetti"></div>
+
+<script>
+const pages = {
+ home: {
+  title:"Ultimate Übersicht", desc:"Dein Control-Panel im Neon-Design",
+  cards:[
+   ["WEB PANEL","Interface-Effekte","Das Panel ist bereit. Schalter, Regler und Designoptionen lassen sich direkt hier ausprobieren.","info"],
+   ["VISUELLE EFFEKTE","Große Aktivierungsanzeigen","Schalte eine Option ein und sieh dir die animierte Aktivierungsanzeige an.","info"],
+   ["KONFIGURATION","Deine lokale Auswahl","Farben, Regler und Spielerliste werden in dieser Sitzung verwaltet.","info"],
+   ["PS5-KOMPATIBILITÄT","Browser-Modus","Eine HTML-Seite kann keine Funktionen in gestreamte PS5-Spiele injizieren.","info"]
+  ]
+ },
+ warzone:{title:"Call of Duty: Warzone",desc:"Loadout- und Interface-Visualisierungen",cards:[
+  ["Aim Assist Anzeige","Visueller Schalter","Lokale Demo-Anzeige – verändert nicht das Spiel.","switch"],
+  ["FOV Anzeige","Sichtfeld-Profil","Regler für eine lokale Profilanzeige.","range",60,120,100],
+  ["HUD Minimal","HUD-Layout","Speichert die Auswahl nur in diesem Panel.","switch"],
+  ["Loadout Profil","Profil auswählen","Wähle eine visuelle Profilvorlage.","select",["Aggressiv","Ausgewogen","Präzision"]],
+  ["Sensitivität","Maus-/Stick-Profil","Lokaler Konfigurationswert.","range",1,20,8],
+  ["Crosshair Farbe","Fadenkreuz-Farbprofil","Ändert keine Spielgrafik.","select",["Cyan","Rot","Grün","Violett"]]
+ ]},
+ gta5:{title:"Grand Theft Auto V",desc:"Fahrzeuge, Charakter und Statistikprofile",cards:[
+  ["Fahrzeug-Profil","Fahrzeug-Setup","Lokale Fahrzeug-Auswahl.","select",["Sportwagen","Supercar","Offroad","Motorrad"]],
+  ["Handling Profil","Fahrgefühl","Lokaler Preset-Schalter.","switch"],
+  ["Charakter HUD","Interface-Layout","Visuelle Einstellung dieser Webseite.","switch"],
+  ["Geld-Statistik","Profilanzeige","Nur eine lokale Anzeige, kein Spielgeld.","range",0,1000000,250000],
+  ["Fahrzeug-Glow","Neon-Farbprofil","Ändert nur die Akzentfarbe des Panels.","switch"],
+  ["Map-Overlay","Kartenprofil","Lokale Profiloption.","switch"]
+ ]},
+ gta6:{title:"Grand Theft Auto VI",desc:"Konzeptbereich für Profile und HUD",cards:[
+  ["Next-Gen HUD","Interface-Konzept","Lokale UI-Option.","switch"],
+  ["Fahrzeugklasse","Profilwahl","Wähle eine Fahrzeugklasse für das Profil.","select",["Muscle","Sport","Luxus","Offroad"]],
+  ["Farbmodus","Visual-Profil","Wählt einen Farbstil für das Panel.","select",["Neon","Dark","Cyberpunk","Classic"]],
+  ["Kamera-Profil","Ansicht","Lokaler Regler.","range",1,10,5],
+  ["Statistik-Karte","Profilanzeige","Lokale Anzeigeoption.","switch"],
+  ["Effektstärke","Neon-Intensität","Regelt die Intensität des lokalen Effekts.","range",0,100,70]
+ ]},
+ bo1:{title:"Call of Duty: Black Ops 1",desc:"Klassische Profil- und HUD-Optionen",cards:[
+  ["Classic HUD","Layout","Lokale Interface-Auswahl.","switch"],
+  ["Sensitivität","Controller-Profil","Lokaler Wert.","range",1,14,7],
+  ["Fadenkreuz-Farbe","Farbprofil","Lokale Auswahl.","select",["Grün","Rot","Cyan","Weiß"]],
+  ["Spieler-Tag","Profilanzeige","Lokale Namensanzeige.","switch"],
+  ["Audio-Profil","Sound-Voreinstellung","Nur eine gespeicherte Auswahl im Panel.","select",["Standard","Kino","Nacht"]],
+  ["Anzeigeeffekt","Neon-Profil","Lokaler Effekt.","switch"]
+ ]},
+ bo2:{title:"Call of Duty: Black Ops 2",desc:"Loadouts, HUD und Profiloptionen",cards:[
+  ["Weapon Profile","Waffenvorlage","Lokales Profil – keine Waffe wird im Spiel geändert.","select",["Assault","SMG","Sniper","Shotgun","LMG"]],
+  ["Aim Profile","Zielprofil","Nur eine Profiloption im Webpanel.","switch"],
+  ["HUD Layout","HUD-Preset","Lokales Layoutprofil.","select",["Classic","Compact","Minimal"]],
+  ["Sensitivity","Empfindlichkeit","Lokaler Regler.","range",1,14,7],
+  ["Player Card","Spielerkarte","Schaltet die lokale Anzeige um.","switch"],
+  ["Prestige Anzeige","Prestige-Profil","Visuelle Profiloption; kein Spiel-Fortschritt.","range",0,10,3],
+  ["Weapon Stats","Statistik-Karte","Lokale Anzeigeoption.","switch"],
+  ["Movement Profile","Bewegungsprofil","Lokale Profilvorlage.","select",["Standard","Schnell","Taktisch"]]
+ ]},
+ zombies:{title:"Black Ops 2 Zombies",desc:"Zombie-Modus: Statistik- und HUD-Profile",cards:[
+  ["Zombie Counter","Zähler-Anzeige","Lokaler visueller Schalter.","switch"],
+  ["Round Anzeige","Runden-Profil","Lokaler Wert.","range",1,99,20],
+  ["Zombie Health HUD","HUD-Layout","Lokale Anzeigeoption.","switch"],
+  ["Perk Profil","Perk-Auswahl","Profilvorlage ohne Spielwirkung.","select",["Standard","Survival","Support","Speed"]],
+  ["Runden-Statistik","Statistik-Profil","Lokale Anzeigeoption.","switch"],
+  ["Map Profil","Karten-Auswahl","Wähle ein lokales Profil.","select",["Town","Origins","Mob of the Dead","Buried","Tranzit"]],
+  ["Waffenprofil","Loadout","Lokale Profilvorlage.","select",["Ray Gun","Galil","AN-94","DSR 50"]],
+  ["Prestige-Anzeige","Rangprofil","Lokaler Regler.","range",0,10,2]
+ ]},
+ visual:{title:"Visuals & HUD",desc:"Design, Farben, Neon und Interface",cards:[
+  ["Rainbow Logo","Animiertes Logo","Schaltet die Regenbogenanimation um.","switch"],
+  ["Neon Glow","Leuchteffekt","Lokale Leuchteffekte.","switch"],
+  ["Scanlines","Retro-Effekt","Lokaler visueller Effekt.","switch"],
+  ["Große Popups","Aktivierungsanzeigen","Schalte große visuelle Meldungen ein oder aus.","switch"],
+  ["UI Animation","Bewegungseffekte","Animierte Karten und Übergänge.","switch"],
+  ["HUD Helligkeit","Helligkeitsprofil","Lokaler Regler.","range",0,100,80]
+ ]},
+ players:{title:"Spielerliste",desc:"Spielernamen lokal verwalten",custom:"players"},
+ system:{title:"System & Farben",desc:"Akzentfarben, Reset und Jailbreak-Status",custom:"system"}
+};
+
+const state = {active:new Set(), values:{}, players:[], rainbow:true, glow:true, popups:true};
+const content = document.getElementById("pageContent");
+const overlay = document.getElementById("overlay");
+let currentPage = "home";
+
+function safeId(text){return text.toLowerCase().replace(/[^a-z0-9]+/g,"-");}
+function cardHTML(card){
+ const [name,desc,detail,type,a,b,c] = card;
+ const id = safeId(currentPage+"-"+name);
+ const saved = state.values[id];
+ let control = "";
+ if(type==="switch"){
+  control = `<input class="switch option-switch" type="checkbox" data-id="${id}" aria-label="${name}" ${state.active.has(id)?"checked":""}>`;
+ } else if(type==="range"){
+  const val = saved ?? c;
+  control = `<div><label class="range-label"><span>${name}</span><strong id="${id}-value">${Number(val).toLocaleString("de-DE")}</strong></label><input type="range" class="field-range" data-id="${id}" min="${a}" max="${b}" value="${val}"></div>`;
+ } else if(type==="select"){
+  control = `<select class="field option-select" data-id="${id}">${a.map(v=>`<option ${saved===v?"selected":""}>${v}</option>`).join("")}</select>`;
+ } else {
+  control = `<button class="action" data-info="${name}" data-detail="${detail}">DETAILS ANZEIGEN</button>`;
+ }
+ return `<article class="card"><div class="row"><h3>${name}</h3>${type==="switch"?control:""}</div><p>${detail}</p>${type==="switch"?`<div class="small">${desc}</div>`:control}</article>`;
+}
+function render(){
+ const page=pages[currentPage];
+ document.getElementById("pageTitle").textContent=page.title;
+ document.getElementById("pageDesc").textContent=page.desc;
+ document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===currentPage));
+ if(page.custom==="players"){renderPlayers();return;}
+ if(page.custom==="system"){renderSystem();return;}
+ content.innerHTML=`<div class="grid">${page.cards.map(cardHTML).join("")}</div>`;
+ content.querySelectorAll(".option-switch").forEach(el=>el.addEventListener("change",()=>{
+  const id=el.dataset.id;
+  if(el.checked) state.active.add(id); else state.active.delete(id);
+  updateCount();
+  if(state.popups) showPopup(el.checked?"AKTIVIERT":"DEAKTIVIERT",id.replace(/-/g," ").toUpperCase(),
+   el.checked?"Die Option wurde im SryModz-Webpanel eingeschaltet.":"Die Option wurde im Webpanel ausgeschaltet.",
+   el.checked?"✦":"◌");
+ }));
+ content.querySelectorAll(".field-range").forEach(el=>el.addEventListener("input",()=>{
+  state.values[el.dataset.id]=Number(el.value);
+  const label=document.getElementById(el.dataset.id+"-value");
+  if(label)label.textContent=Number(el.value).toLocaleString("de-DE");
+ }));
+ content.querySelectorAll(".option-select").forEach(el=>el.addEventListener("change",()=>{
+  state.values[el.dataset.id]=el.value;
+  showPopup("GESPEICHERT",el.value.toUpperCase(),"Die Auswahl wurde lokal im Webpanel übernommen.","✓");
+ }));
+ content.querySelectorAll("[data-info]").forEach(el=>el.addEventListener("click",()=>{
+  showPopup("BEREIT",el.dataset.info,el.dataset.detail,"✦");
+ }));
+ updateCount();
+}
+function renderPlayers(){
+ content.innerHTML=`
+ <div class="card">
+  <h3>Spieler hinzufügen</h3>
+  <p>Füge Namen zu deiner lokalen Liste hinzu. Es werden keine Spieler gesucht oder kontaktiert.</p>
+  <form id="playerForm" class="row">
+   <input id="playerName" class="field" maxlength="32" placeholder="Spielername eingeben..." required>
+   <button class="action primary">HINZUFÜGEN</button>
+  </form>
+  <div id="playerList" class="player-list"></div>
+  <button class="action" id="clearPlayers" style="margin-top:14px">LISTE LEEREN</button>
+ </div>`;
+ const list=document.getElementById("playerList");
+ const draw=()=>{list.innerHTML=state.players.map((p,i)=>`<span class="player-tag">${escapeHTML(p)}<button data-remove="${i}" aria-label="Entfernen">✕</button></span>`).join("");
+ list.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{state.players.splice(+b.dataset.remove,1);draw();});};
+ draw();
+ document.getElementById("playerForm").onsubmit=e=>{
+  e.preventDefault();
+  const input=document.getElementById("playerName");
+  const name=input.value.trim();
+  if(name&&!state.players.includes(name)){state.players.push(name);draw();showPopup("HINZUGEFÜGT",name,"Der Name wurde deiner lokalen Spielerliste hinzugefügt.","♙");}
+  input.value="";
+ };
+ document.getElementById("clearPlayers").onclick=()=>{state.players=[];draw();showPopup("LISTE GELEERT","SPIELERLISTE","Alle Namen wurden aus der lokalen Liste entfernt.","◌");};
+}
+function renderSystem(){
+ content.innerHTML=`
+ <div class="grid">
+  <article class="card"><h3>Akzentfarbe</h3><p>Ändert die Neonfarbe dieses Panels.</p>
+   <div class="color-row">
+   <button class="swatch" style="background:#00f7ff" data-color="#00f7ff" aria-label="Cyan"></button>
+   <button class="swatch" style="background:#a855ff" data-color="#a855ff" aria-label="Violett"></button>
+   <button class="swatch" style="background:#ff386b" data-color="#ff386b" aria-label="Pink"></button>
+   <button class="swatch" style="background:#39ff88" data-color="#39ff88" aria-label="Grün"></button>
+   <button class="swatch" style="background:#ffbd39" data-color="#ffbd39" aria-label="Gold"></button>
+   <button class="swatch" style="background:#ffffff" data-color="#ffffff" aria-label="Weiß"></button>
+   </div>
+  </article>
+  <article class="card"><h3>Webpanel-Optionen</h3><p>Steuert Animationen und Aktivierungsanzeigen.</p>
+   <div class="row"><span class="small">Große Popups</span><input id="popupToggle" class="switch" type="checkbox" ${state.popups?"checked":""}></div><br>
+   <div class="row"><span class="small">Rainbow Logo</span><input id="rainbowToggle" class="switch" type="checkbox" ${state.rainbow?"checked":""}></div><br>
+   <div class="row"><span class="small">Neon Glow</span><input id="glowToggle" class="switch" type="checkbox" ${state.glow?"checked":""}></div>
+  </article>
+  <article class="card"><h3>Firmware-Status</h3><p>Diese Webseite kann keinen Jailbreak starten, keine Firmware verändern und keine Sicherheitsmechanismen umgehen.</p>
+   <button class="action danger" id="jailbreak">⚠ JAILBREAK 14.1.0</button>
+  </article>
+  <article class="card"><h3>Panel zurücksetzen</h3><p>Setzt lokale Schalter und Werte zurück.</p>
+   <button class="action" id="resetAll">ALLE OPTIONEN ZURÜCKSETZEN</button>
+  </article>
+ </div>
+ <div class="notice">Die Schaltflächen erzeugen echte UI-Reaktionen in dieser HTML-Seite. Sie melden keinen erfolgreichen Jailbreak und verändern nicht die PS5 oder ein Spiel.</div>`;
+ content.querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{
+  document.documentElement.style.setProperty("--accent",b.dataset.color);
+  showPopup("FARBE GEÄNDERT","NEON THEME","Die Akzentfarbe des Webpanels wurde geändert.","✦");
+ });
+ document.getElementById("popupToggle").onchange=e=>state.popups=e.target.checked;
+ document.getElementById("rainbowToggle").onchange=e=>{
+  state.rainbow=e.target.checked;
+  document.querySelector(".logo").style.animation=e.target.checked?"rainbow 4s linear infinite, bounce 2.4s ease-in-out infinite":"bounce 2.4s ease-in-out infinite";
+ };
+ document.getElementById("glowToggle").onchange=e=>{
+  state.glow=e.target.checked;
+  document.querySelector(".logo").style.filter=e.target.checked?"drop-shadow(0 0 17px #00eaff70)":"none";
+ };
+ document.getElementById("jailbreak").onclick=()=>{
+  showPopup("NICHT AUSGEFÜHRT","JAILBREAK 14.1.0",
+   "Dies ist nur eine visuelle Statusanzeige. Eine Webseite im PS5-Browser kann keinen Jailbreak ausführen und die Systemsoftware nicht verändern. Es wurde nichts an der Konsole geändert.",
+   "⚠");
+  burst();
+ };
+ document.getElementById("resetAll").onclick=resetAll;
+}
+function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function updateCount(){document.getElementById("activeCount").textContent=state.active.size+" OPTIONEN AKTIV";}
+function showPopup(title,kicker,text,icon){
+ document.getElementById("popupTitle").textContent=title;
+ document.getElementById("popupKicker").textContent=kicker;
+ document.getElementById("popupText").textContent=text;
+ document.getElementById("popupIcon").textContent=icon;
+ overlay.classList.add("show");
+}
+function closePopup(){overlay.classList.remove("show");document.getElementById("confetti").innerHTML="";}
+function burst(){
+ const root=document.getElementById("confetti");
+ root.innerHTML="";
+ const colors=["#00f7ff","#a855ff","#ff386b","#39ff88","#ffbd39","#ffffff"];
+ for(let i=0;i<90;i++){
+  const p=document.createElement("i");
+  p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.background=colors[i%colors.length];
+  p.style.animationDelay=Math.random()*.8+"s";
+  p.style.animationDuration=(1.8+Math.random()*2)+"s";
+  p.style.transform=`rotate(${Math.random()*180}deg)`;
+  root.appendChild(p);
+ }
+}
+function resetAll(){
+ state.active.clear();state.values={};state.players=[];
+ updateCount();render();
+ showPopup("ZURÜCKGESETZT","SYSTEM RESET","Die lokalen Webpanel-Optionen wurden zurückgesetzt.","↻");
+}
+document.getElementById("nav").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-page]");
+ if(!b)return;
+ currentPage=b.dataset.page;render();
+});
+document.getElementById("reset").onclick=resetAll;
+document.getElementById("closePopup").onclick=closePopup;
+overlay.addEventListener("click",e=>{if(e.target===overlay)closePopup();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePopup();});
+render();
+</script>
+</body>
+</html>
